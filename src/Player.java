@@ -123,14 +123,31 @@ public class Player {
         }
     }
 
-    public void hitTest(Obstacle obstacle) {
-        if ((obstacle.getX() <= x + width) && (obstacle.getX() + obstacle.getWidth() > x + width / 2) && (!isLower(obstacle))) {
+    public boolean hitTest(Obstacle obstacle) {
+        if ((obstacle.getX() <= x + width) && (obstacle.getX() + obstacle.getWidth() > x + width / 2)
+                && (!isLower(obstacle))) {
             int boardX = x + width;
             int boardY = y + img.getHeight();
             int result = (int) (boardX * Road.K + obstacle.getImageStartY()) - boardY;
-            if (result < 30 && !obstacle.getName().equals("1"))
-                Road.gameOver();
+            if (result < 30 )
+                switch (obstacle.getName()){
+                    case "1":
+                        System.out.println("Tramp jump!");
+                        break;
+                    case "2":
+                    case "4":
+                        Road.gameOver();
+                        break;
+                    case "3":
+                        sWithOutCrash = 0;
+                        s -= 2000;
+                        v = 0;
+                        Road.setMinSpawnTime(6000);
+                        Road.setMaxSpawnTime(7500);
+                        return true;
+                }
         }
+        return false;
     }
 
     public boolean isLower(Obstacle obstacle) {

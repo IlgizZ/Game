@@ -107,19 +107,25 @@ public class Road extends JPanel implements ActionListener, Runnable {
         p.ride();
         obstacles.stream().forEach(obstacle -> obstacle.move());
         repaint();
-        obstacles.stream().forEach(obstacle -> p.hitTest(obstacle));
+        Iterator i = obstacles.iterator();
+        while (i.hasNext())
+            if (p.hitTest((Obstacle) i.next()))
+                i.remove();
     }
 
     @Override
     public void run() {
         while (true) {
-            if (Main.startGame)
+            System.out.println(1);
+            if (Main.startGame) {
                 try {
+                    System.out.println(1);
                     Thread.sleep(minSpawnTime + (int) (Math.random() * (maxSpawnTime - minSpawnTime)));
                     obstacles.add(new Obstacle(640, this));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
         }
     }
 
