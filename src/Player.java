@@ -11,17 +11,22 @@ import java.io.IOException;
 public class Player {
     private BufferedImage img;
     private BufferedImage boardImg;
+    private BufferedImage riderImg;
+    private BufferedImage trampJumpImg;
     private int width;
     private int boardHeight;
 
     {
         try {
+            trampJumpImg = ImageIO.read(new File("res/Rider/TrampJump.png"));
+
             boardImg = ImageIO.read(new File("res/Rider/Board.png"));
             width = boardImg.getWidth();
             boardHeight = boardImg.getHeight();
 
-            img = ImageIO.read(new File("res/Rider/Man.png"));
-            img.getGraphics().drawImage(boardImg, 0, img.getHeight() - boardHeight, null);
+            riderImg = ImageIO.read(new File("res/Rider/Man.png"));
+            riderImg.getGraphics().drawImage(boardImg, 0, riderImg.getHeight() - boardHeight, null);
+            img = riderImg;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,6 +46,12 @@ public class Player {
 
     private int x = 0;
     private int y = 170;
+
+    private boolean isRide = false;
+
+    public boolean isRide() {
+        return isRide;
+    }
 
     public int getXLayer2() {
         return layer2;
@@ -110,7 +121,7 @@ public class Player {
         } else if (key == KeyEvent.VK_SPACE) {
             System.out.println("Jump animation");
         } else if (key == KeyEvent.VK_RIGHT && sWithOutCrash < 0) {
-            Main.startGame = true;
+            isRide = true;
             sWithOutCrash++;
             x = 20;
         }
@@ -129,10 +140,11 @@ public class Player {
             int boardX = x + width;
             int boardY = y + img.getHeight();
             int result = (int) (boardX * Road.K + obstacle.getImageStartY()) - boardY;
-            if (result < 30 )
-                switch (obstacle.getName()){
+            if (result < 30)
+                switch (obstacle.getName()) {
                     case "1":
                         System.out.println("Tramp jump!");
+                        img = trampJumpImg;
                         break;
                     case "2":
                     case "4":

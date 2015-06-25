@@ -73,6 +73,7 @@ public class Road extends JPanel implements ActionListener, Runnable {
 
     public Road() {
         mainTimer.start();
+        Main.setStartGame(true);
         obstacleFactory.start();
         addKeyListener(new RoadKeyAdapter());
         setFocusable(true);
@@ -115,22 +116,19 @@ public class Road extends JPanel implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            System.out.println(1);
-            if (Main.startGame) {
+        while (Main.isStartGame()) {
+            if (p.isRide())
                 try {
-                    System.out.println(1);
                     Thread.sleep(minSpawnTime + (int) (Math.random() * (maxSpawnTime - minSpawnTime)));
                     obstacles.add(new Obstacle(640, this));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
         }
     }
 
     public static void gameOver() {
-        Main.startGame = false;
+        Main.setStartGame(false);
         JOptionPane.showMessageDialog(null, "Game Over!");
         System.exit(1);
     }

@@ -1,7 +1,15 @@
 import javax.swing.*;
 
 public class Main {
-    public static boolean startGame = false;
+    private static boolean startGame = false;
+
+    static void setStartGame(boolean startGame) {
+        Main.startGame = startGame;
+    }
+
+    static boolean isStartGame() {
+        return startGame;
+    }
 
     public static void main(String[] args) {
         JFrame f = new JFrame("Ice Board jumping");
